@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Space Dodge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ui">SCORE: <span id="score">0</span></div>
+    
+    <div id="startScreen">
+        <h1 class="retro-text">SPACE DODGE</h1>
+        <p>KLIK UNTUK MEMULAI</p>
+    </div>
+
+    <div id="gameOverOverlay">
+        <h1 class="retro-text" style="color: #ff4444;">GAME OVER</h1>
+        <p>SCORE: <span id="finalScore">0</span></p>
+        <button onclick="resetGame()">RETRY</button>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    <script src="cheat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
