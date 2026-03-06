@@ -79,6 +79,57 @@ canvas.addEventListener('mousemove', (e) => {
     }
 });
 
+// Cek apakah perangkat mendukung sentuhan (Mobile)
+const isMobile = 'ontouchstart' in window;
+
+// --- SISTEM KONTROL MOBILE ---
+if (isMobile) {
+    // Klik di HP langsung mulai tanpa pointer lock
+    document.addEventListener('touchstart', (e) => {
+        if (!gameActive && overlay.style.display !== "block") {
+            startGame();
+        }
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+        if (gameActive) {
+            e.preventDefault(); // Mencegah scrolling saat main
+            let touch = e.touches[0];
+            let rect = canvas.getBoundingClientRect();
+            // Posisikan targetX di tengah-tengah jari
+            targetX = touch.clientX - rect.left - (player.w / 2);
+            
+            // Batas layar
+            if (targetX < 0) targetX = 0;
+            if (targetX > canvas.width - player.w) targetX = canvas.width - player.w;
+        }
+    }, { passive: false });
+
+} else {
+    // --- SISTEM KONTROL DESKTOP (Kursor) ---
+    document.addEventListener('click', () => {
+        if (!gameActive && overlay.style.display !== "block") {
+            canvas.requestPointerLock();
+        }
+    });
+
+    document.addEventListener('pointerlockchange', () => {
+        if (document.pointerLockElement === canvas) {
+            startGame();
+        } else {
+            gameActive = false;
+        }
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        if (gameActive) {
+            targetX += e.movementX;
+            if (targetX < 0) targetX = 0;
+            if (targetX > canvas.width - player.w) targetX = canvas.width - player.w;
+        }
+    });
+}
+
 function spawnEnemy() {
     // HANYA SPAWN JIKA SEDANG MAIN
     if (gameActive) {
@@ -144,14 +195,14 @@ function draw() {
 
 function endGame() {
     gameActive = false;
-    document.exitPointerLock();
+    if (!isMobile) document.exitPointerLock();
+    
     finalScoreElement.innerText = score;
     overlay.style.display = "block";
-    canvas.style.cursor = "url('kursor.png'), auto";
+    canvas.style.cursor = "auto";
 }
 
 function resetGame() {
-    // Reset posisi ke tengah sebelum lock lagi
     targetX = window.innerWidth / 2 - player.w / 2;
     player.x = targetX;
     canvas.requestPointerLock();
