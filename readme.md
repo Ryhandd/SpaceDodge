@@ -1,4 +1,4 @@
-# 🚀 VOID RUNNER
+# 🚀 SPACE DODGE
 
 > *Survive the asteroid field. How long can you last?*
 
