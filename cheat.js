@@ -1,47 +1,68 @@
-// cheat.js
-var cheatEnabled = false; 
+// =============================================
+//  VOID RUNNER — cheat.js
+//  Auto-pilot system
+// =============================================
+
+var cheatEnabled = false;
 
 function runAutoPilot() {
-    // Jika game belum aktif, jangan lakukan apa-apa
     if (typeof gameActive === 'undefined' || !gameActive) return;
 
-    let danger = null;
-    let minDistance = Infinity;
+    let danger    = null;
+    let minDist   = Infinity;
 
     enemies.forEach(en => {
-        let dist = player.y - en.y;
-        if (dist > 0 && dist < minDistance) {
-            minDistance = dist;
-            danger = en;
+        const dist = player.y - en.y;
+        if (dist > 0 && dist < minDist) {
+            minDist = dist;
+            danger  = en;
         }
     });
 
     if (danger) {
-        let safeMargin = 70; 
-        if (targetX + player.w > danger.x - safeMargin && targetX < danger.x + danger.w + safeMargin) {
-            // Menghindar dengan menggeser targetX
-            if (danger.x + (danger.w / 2) > window.innerWidth / 2) {
-                targetX -= 50; 
+        const safeMargin    = 80;
+        const playerCenter  = player.x + player.w / 2;
+        const enemyCenter   = danger.x + danger.w / 2;
+        const playerRight   = player.x + player.w;
+        const overlapping   =
+            playerRight > danger.x - safeMargin &&
+            player.x    < danger.x + danger.w + safeMargin;
+
+        if (overlapping) {
+            // Dodge toward the safer side
+            const spaceLeft  = danger.x - safeMargin;
+            const spaceRight = canvas.width - (danger.x + danger.w + safeMargin);
+
+            if (spaceLeft > spaceRight) {
+                targetX -= 55;
             } else {
-                targetX += 50;
+                targetX += 55;
             }
+            targetX = Math.max(0, Math.min(canvas.width - player.w, targetX));
+        } else {
+            // Gentle centering when no immediate threat
+            const centerX = canvas.width / 2 - player.w / 2;
+            targetX += (centerX - targetX) * 0.02;
         }
     }
 }
 
-// Kontrol Tombol 'C'
+// Toggle with 'C' key
 window.addEventListener('keydown', (e) => {
     if (e.key.toLowerCase() === 'c') {
         cheatEnabled = !cheatEnabled;
-        
-        // Cara aman akses elemen skor
-        const sElement = document.getElementById("score");
-        if (sElement) {
-            sElement.style.color = cheatEnabled ? "#ff00ff" : "#00c3ff";
-            // Tambahkan teks (CHEAT) di samping skor agar jelas
-            sElement.parentElement.style.textShadow = cheatEnabled ? "0 0 10px #ff00ff" : "none";
+
+        const indicator = document.getElementById("cheat-indicator");
+        if (indicator) {
+            indicator.style.display = cheatEnabled ? "block" : "none";
         }
-        
-        console.log("Cheat Status:", cheatEnabled);
+
+        const scoreEl = document.getElementById("score");
+        if (scoreEl) {
+            scoreEl.style.color      = cheatEnabled ? "#aa00ff" : "#00e5ff";
+            scoreEl.style.textShadow = cheatEnabled ? "0 0 15px #aa00ff" : "0 0 15px #00e5ff";
+        }
+
+        console.log(`[VOID RUNNER] Auto-pilot: ${cheatEnabled ? "ON" : "OFF"}`);
     }
 });

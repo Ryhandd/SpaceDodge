@@ -3,25 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Retro Space Dodge</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>VOID RUNNER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="ui">SCORE: <span id="score">0</span></div>
-    
-    <div id="startScreen">
-        <h1 class="retro-text">SPACE DODGE</h1>
-        <p>KLIK UNTUK MEMULAI</p>
-    </div>
 
-    <div id="gameOverOverlay">
-        <h1 class="retro-text" style="color: #ff4444;">GAME OVER</h1>
-        <p>SCORE: <span id="finalScore">0</span></p>
-        <button onclick="resetGame()">RETRY</button>
-    </div>
+    <!-- STAR BACKGROUND -->
+    <canvas id="bgCanvas"></canvas>
 
+    <!-- GAME CANVAS -->
     <canvas id="gameCanvas"></canvas>
+
+    <!-- UI HUD -->
+    <div id="hud">
+        <div id="score-box">
+            <span id="score-label">SCORE</span>
+            <span id="score">0</span>
+        </div>
+        <div id="level-box">
+            <span id="level-label">LEVEL</span>
+            <span id="level-display">1</span>
+        </div>
+        <div id="combo-box">
+            <span id="combo-label">COMBO</span>
+            <span id="combo-display">x1</span>
+        </div>
+    </div>
+
+    <!-- CHEAT INDICATOR -->
+    <div id="cheat-indicator">⚡ AUTO-PILOT ON</div>
+
+    <!-- START SCREEN -->
+    <div id="startScreen" class="overlay-panel">
+        <div class="panel-glow"></div>
+        <div class="scanline"></div>
+        <div class="title-area">
+            <div class="title-sub">— ARCADE —</div>
+            <h1 class="game-title">VOID<br><span>RUNNER</span></h1>
+            <div class="title-tagline">SURVIVE THE ASTEROID FIELD</div>
+        </div>
+        <div class="divider"></div>
+        <div class="instructions">
+            <div class="inst-row"><span class="key">MOUSE</span><span>Gerakkan pesawat</span></div>
+            <div class="inst-row"><span class="key">C</span><span>Toggle auto-pilot</span></div>
+            <div class="inst-row"><span class="key">ESC</span><span>Pause</span></div>
+        </div>
+        <div class="start-prompt">[ KLIK UNTUK MEMULAI ]</div>
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+    </div>
+
+    <!-- GAME OVER SCREEN -->
+    <div id="gameOverOverlay" class="overlay-panel">
+        <div class="panel-glow danger"></div>
+        <div class="scanline"></div>
+        <div class="go-title">GAME OVER</div>
+        <div class="go-stats">
+            <div class="stat-row">
+                <span class="stat-label">FINAL SCORE</span>
+                <span class="stat-value" id="finalScore">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">LEVEL REACHED</span>
+                <span class="stat-value" id="finalLevel">1</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">MAX COMBO</span>
+                <span class="stat-value" id="finalCombo">x1</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">HIGH SCORE</span>
+                <span class="stat-value highlight" id="highScoreDisplay">0</span>
+            </div>
+        </div>
+        <button id="retryBtn" onclick="resetGame()">
+            <span>▶ RETRY</span>
+        </button>
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+    </div>
+
+    <!-- PAUSE SCREEN -->
+    <div id="pauseOverlay" class="overlay-panel">
+        <div class="panel-glow"></div>
+        <div class="pause-title">PAUSED</div>
+        <button onclick="resumeGame()"><span>▶ RESUME</span></button>
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+    </div>
+
+    <!-- LEVEL UP NOTIFICATION -->
+    <div id="levelUpNotif"></div>
+
     <script src="cheat.js"></script>
     <script src="script.js"></script>
 </body>
