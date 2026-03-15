@@ -1,5 +1,5 @@
 // =============================================
-//  VOID RUNNER — cheat.js
+//  SPACE DODGE — cheat.js
 //  Auto-pilot system
 // =============================================
 
@@ -63,6 +63,6 @@ window.addEventListener('keydown', (e) => {
             scoreEl.style.textShadow = cheatEnabled ? "0 0 15px #aa00ff" : "0 0 15px #00e5ff";
         }
 
-        console.log(`[VOID RUNNER] Auto-pilot: ${cheatEnabled ? "ON" : "OFF"}`);
+        console.log(`[SPACE DODGE] Auto-pilot: ${cheatEnabled ? "ON" : "OFF"}`);
     }
 });
